@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  nextjs:
+    container_name: nextjs_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/dbname
+      - NODE_ENV=development
+    command: npm run dev
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: animeco
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
